@@ -1,0 +1,2 @@
+<?php
+// Halaman dashboard utama

@@ -1,0 +1,2 @@
+<?php
+// Koneksi database MySQL
