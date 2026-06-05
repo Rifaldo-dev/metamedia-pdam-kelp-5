@@ -3,6 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+
+// AJAX: Proses login (dipanggil via POST)
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     include __DIR__ . '/../koneksi.php';
 
@@ -36,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     exit;
 }
+
+// CEK SESSION: Redirect jika belum login
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: " . dirname($_SERVER['SCRIPT_NAME']) . "/auth/login.php");
