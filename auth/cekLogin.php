@@ -1,8 +1,11 @@
 <?php
-session_start();
-include '../koneksi.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    include __DIR__ . '/../koneksi.php';
+
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = $_POST['password'];
 
@@ -35,6 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: auth/login.php");
+    header("Location: " . dirname($_SERVER['SCRIPT_NAME']) . "/auth/login.php");
     exit;
 }
