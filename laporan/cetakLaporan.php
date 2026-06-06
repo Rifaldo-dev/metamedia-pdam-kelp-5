@@ -1,6 +1,7 @@
 <?php
 $pageTitle = "Cetak Rekening - PDAM Zernih";
 $activePage = "laporan";
+$activeSubPage = "cetak";
 $baseUrl = "../";
 include '../assets/layouts/header.php';
 include '../koneksi.php';

@@ -44,25 +44,25 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= $baseUrl ?>laporan/cetakLaporan.php" class="nav-link">
+                            <a href="<?= $baseUrl ?>laporan/cetakLaporan.php" class="nav-link <?= ($activeSubPage ?? '') === 'cetak' ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Cetak Rekening</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $baseUrl ?>laporan/pendapatanPerPeriode.php" class="nav-link">
+                            <a href="<?= $baseUrl ?>laporan/pendapatanPerPeriode.php" class="nav-link <?= ($activeSubPage ?? '') === 'periode' ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Per Periode</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $baseUrl ?>laporan/pendapatanPerTahun.php" class="nav-link">
+                            <a href="<?= $baseUrl ?>laporan/pendapatanPerTahun.php" class="nav-link <?= ($activeSubPage ?? '') === 'tahun' ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Per Tahun</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $baseUrl ?>laporan/pendapatanTertinggi.php" class="nav-link">
+                            <a href="<?= $baseUrl ?>laporan/pendapatanTertinggi.php" class="nav-link <?= ($activeSubPage ?? '') === 'tertinggi' ? 'active' : '' ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Tertinggi</p>
                             </a>

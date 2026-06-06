@@ -1,6 +1,7 @@
 <?php
 $pageTitle = "Laporan Pendapatan per Periode - PDAM Zernih";
 $activePage = "laporan";
+$activeSubPage = "periode";
 $baseUrl = "../";
 include '../assets/layouts/header.php';
 include '../koneksi.php';
