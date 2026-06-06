@@ -13,11 +13,11 @@
 - [x] CRUD Pelanggan
 - [x] Input Tagihan (hitung otomatis)
 - [x] Pagination & Searching
-- [ ] Cetak Rekening per Pelanggan
-- [ ] Laporan Pendapatan per Periode
-- [ ] Laporan Pendapatan per Tahun
-- [ ] Laporan Pendapatan Tertinggi
-- [ ] Export Excel
+- [x] Cetak Rekening per Pelanggan
+- [x] Laporan Pendapatan per Periode
+- [x] Laporan Pendapatan per Tahun
+- [x] Laporan Pendapatan Tertinggi
+- [x] Export Excel
 - [x] Logout
 
 ## Rules Commit

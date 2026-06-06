@@ -37,11 +37,37 @@
                         <p>Tagihan</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="<?= $baseUrl ?>laporan/pendapatanPerPeriode.php" class="nav-link <?= ($activePage ?? '') === 'laporan' ? 'active' : '' ?>">
+                <li class="nav-item has-treeview <?= ($activePage ?? '') === 'laporan' ? 'menu-open' : '' ?>">
+                    <a href="#" class="nav-link <?= ($activePage ?? '') === 'laporan' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-chart-bar"></i>
-                        <p>Laporan</p>
+                        <p>Laporan <i class="right fas fa-angle-left"></i></p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= $baseUrl ?>laporan/cetakLaporan.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Cetak Rekening</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= $baseUrl ?>laporan/pendapatanPerPeriode.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Per Periode</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= $baseUrl ?>laporan/pendapatanPerTahun.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Per Tahun</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= $baseUrl ?>laporan/pendapatanTertinggi.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tertinggi</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="<?= $baseUrl ?>auth/logout.php" class="nav-link">
