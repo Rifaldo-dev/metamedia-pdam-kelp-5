@@ -11,8 +11,8 @@
 - [x] CRUD Kategori
 - [x] CRUD Karyawan
 - [x] CRUD Pelanggan
-- [ ] Input Tagihan (hitung otomatis)
-- [ ] Pagination & Searching
+- [x] Input Tagihan (hitung otomatis)
+- [x] Pagination & Searching
 - [ ] Cetak Rekening per Pelanggan
 - [ ] Laporan Pendapatan per Periode
 - [ ] Laporan Pendapatan per Tahun
