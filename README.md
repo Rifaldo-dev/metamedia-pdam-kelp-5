@@ -6,7 +6,8 @@
 - [x] Database SQL
 - [x] Koneksi database
 - [x] Login (AJAX + show password)
-- [x] Dashboard (AdminLTE )
+- [x] Dashboard (AdminLTE)
+- [x] Fix sidebar & layout AdminLTE
 - [ ] CRUD Kategori
 - [ ] CRUD Karyawan
 - [ ] CRUD Pelanggan
