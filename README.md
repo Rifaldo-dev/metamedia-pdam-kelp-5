@@ -8,8 +8,8 @@
 - [x] Login (AJAX + show password)
 - [x] Dashboard (AdminLTE)
 - [x] Fix sidebar & layout AdminLTE
-- [ ] CRUD Kategori
-- [ ] CRUD Karyawan
+- [x] CRUD Kategori
+- [x] CRUD Karyawan
 - [ ] CRUD Pelanggan
 - [ ] Input Tagihan (hitung otomatis)
 - [ ] Pagination & Searching
