@@ -25,7 +25,7 @@ $pendapatan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(totalT
     </div>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content pt-3">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3 col-6">

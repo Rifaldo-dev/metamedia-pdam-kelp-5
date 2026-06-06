@@ -9,6 +9,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+<script>
+    // Reset sidebar collapse state
+    if (document.body.classList.contains('sidebar-collapse')) {
+        document.body.classList.remove('sidebar-collapse');
+    }
+    localStorage.removeItem('remember-sidebar');
+</script>
 <!-- Custom JS -->
 <script src="<?= $baseUrl ?>assets/js/app.js"></script>
 </body>

@@ -1,17 +1,3 @@
-<!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-    </ul>
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <span class="nav-link"><?= $_SESSION['namaKaryawan'] ?? $_SESSION['username'] ?></span>
-        </li>
-    </ul>
-</nav>
-
 <!-- Main Sidebar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="<?= $baseUrl ?>dashboard.php" class="brand-link">
@@ -20,7 +6,7 @@
 
     <div class="sidebar">
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="<?= $baseUrl ?>dashboard.php" class="nav-link <?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -67,6 +53,20 @@
         </nav>
     </div>
 </aside>
+
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <span class="nav-link"><?= $_SESSION['namaKaryawan'] ?? $_SESSION['username'] ?></span>
+        </li>
+    </ul>
+</nav>
 
 <!-- Content Wrapper -->
 <div class="content-wrapper">
