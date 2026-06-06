@@ -10,9 +10,9 @@
 - [x] Fix sidebar & layout AdminLTE
 - [x] CRUD Kategori
 - [x] CRUD Karyawan
-- [ ] CRUD Pelanggan
-- [ ] Input Tagihan (hitung otomatis)
-- [ ] Pagination & Searching
+- [x] CRUD Pelanggan
+- [x] Input Tagihan (hitung otomatis)
+- [x] Pagination & Searching
 - [ ] Cetak Rekening per Pelanggan
 - [ ] Laporan Pendapatan per Periode
 - [ ] Laporan Pendapatan per Tahun
