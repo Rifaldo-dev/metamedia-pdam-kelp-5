@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = $_POST['password'];
 
-    $query = "SELECT u.id, u.username, u.password, u.role, k.namaKaryawan 
+    $query = "SELECT u.id, u.username, u.password, u.role, u.karyawanId, k.namaKaryawan 
               FROM users u 
               LEFT JOIN karyawan k ON u.karyawanId = k.id 
               WHERE u.username = '$username'";
@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['namaKaryawan'] = $user['namaKaryawan'];
+            $_SESSION['karyawanId'] = $user['karyawanId'];
 
             $now = date('Y-m-d H:i:s');
             mysqli_query($conn, "UPDATE users SET lastLogin = '$now' WHERE id = '{$user['id']}'");

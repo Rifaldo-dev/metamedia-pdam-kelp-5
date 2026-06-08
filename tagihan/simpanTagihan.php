@@ -4,12 +4,26 @@ include '../koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pelangganId = (int) $_POST['pelangganId'];
-    $karyawanId = (int) $_POST['karyawanId'];
+    $karyawanId = (int) ($_POST['karyawanId'] ?: ($_SESSION['karyawanId'] ?? 0));
     $periodeBulan = (int) $_POST['periodeBulan'];
     $periodeTahun = (int) $_POST['periodeTahun'];
     $tglTagih = mysqli_real_escape_string($conn, $_POST['tglTagih']);
     $meterBulanLalu = (int) $_POST['meterBulanLalu'];
     $meterBulanIni = (int) $_POST['meterBulanIni'];
+
+    // Validasi karyawanId
+    if ($karyawanId <= 0) {
+        // Ambil karyawanId dari user yang login
+        $userId = $_SESSION['user_id'] ?? 0;
+        $userRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT karyawanId FROM users WHERE id = $userId"));
+        $karyawanId = (int) ($userRow['karyawanId'] ?? 0);
+    }
+
+    if ($karyawanId <= 0) {
+        $_SESSION['error'] = "Karyawan tidak teridentifikasi. Silakan logout dan login ulang!";
+        header("Location: tambahTagihan.php");
+        exit;
+    }
 
     // Validasi
     if ($meterBulanIni < $meterBulanLalu) {
