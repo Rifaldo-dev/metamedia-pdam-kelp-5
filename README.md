@@ -1,5 +1,23 @@
 # Sistem Informasi PDAM Zernih
 
+## Rules Commit
+
+Format: `tipe: deskripsi singkat`
+
+### Tipe Commit
+
+- `feat:` - Menambahkan fitur baru
+- `fix:` - Memperbaiki bug
+
+### Contoh
+
+```
+feat: tambah form input tagihan
+feat: cetak laporan per periode
+fix: perbaiki hitungan pemakaian air
+fix: pagination tidak muncul
+```
+
 ## Progress
 
 - [x] Setup struktur project
@@ -20,20 +38,25 @@
 - [x] Export Excel
 - [x] Logout
 
-## Rules Commit
+## Screenshot
 
-Format: `tipe: deskripsi singkat`
+### Login
+![Login](assets/docs/login.png)
 
-### Tipe Commit
+### Dashboard
+![Dashboard](assets/docs/dashboard.png)
 
-- `feat:` - Menambahkan fitur baru
-- `fix:` - Memperbaiki bug
+### Kategori
+![Kategori](assets/docs/kategori.png)
 
-### Contoh
+### Karyawan
+![Karyawan](assets/docs/karyawan.png)
 
-```
-feat: tambah form input tagihan
-feat: cetak laporan per periode
-fix: perbaiki hitungan pemakaian air
-fix: pagination tidak muncul
-```
+### Pelanggan
+![Pelanggan](assets/docs/pelanggan.png)
+
+### Tagihan
+![Tagihan](assets/docs/tagihan.png)
+
+### Laporan
+![Laporan](assets/docs/laporan.png)
