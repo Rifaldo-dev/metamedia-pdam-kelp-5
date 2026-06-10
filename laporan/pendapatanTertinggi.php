@@ -22,6 +22,15 @@ $query = "SELECT p.noRekening, p.namaPelanggan, k.namaKategori,
           ORDER BY totalPendapatan DESC 
           LIMIT $limitFilter";
 $result = mysqli_query($conn, $query);
+
+// Siapkan data chart
+$chartNames = [];
+$chartTotals = [];
+$chartTempResult = mysqli_query($conn, $query);
+while ($row = mysqli_fetch_assoc($chartTempResult)) {
+    $chartNames[] = $row['namaPelanggan'];
+    $chartTotals[] = (int)$row['totalPendapatan'];
+}
 ?>
 
 <?php include '../assets/layouts/sidebar.php'; ?>
@@ -69,6 +78,20 @@ $result = mysqli_query($conn, $query);
                     <div class="alert alert-info">
                         <strong>Top <?= $limitFilter ?> Pelanggan dengan Pendapatan Tertinggi - Tahun <?= $tahunFilter ?></strong>
                     </div>
+                    <!-- Chart Pendapatan Tertinggi -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card card-outline card-warning">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-chart-bar"></i> Top <?= $limitFilter ?> Pelanggan - Pendapatan Tertinggi</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="chartTertinggi" height="80"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -113,4 +136,55 @@ $result = mysqli_query($conn, $query);
     </section>
 
 </div>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const names = <?= json_encode($chartNames) ?>;
+    const totals = <?= json_encode($chartTotals) ?>;
+
+    // Generate gradient colors
+    const colors = names.map(function(_, i) {
+        const hue = (i * 35 + 200) % 360;
+        return 'hsla(' + hue + ', 70%, 55%, 0.8)';
+    });
+
+    new Chart(document.getElementById('chartTertinggi'), {
+        type: 'bar',
+        data: {
+            labels: names,
+            datasets: [{
+                label: 'Total Pendapatan (Rp)',
+                data: totals,
+                backgroundColor: colors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Rp ' + context.raw.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
 <?php include '../assets/layouts/footer.php'; ?>
