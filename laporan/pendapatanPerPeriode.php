@@ -23,6 +23,31 @@ $result = mysqli_query($conn, $query);
 $totalPendapatan = mysqli_fetch_assoc(mysqli_query($conn, 
     "SELECT COALESCE(SUM(totalTagihan), 0) as total FROM tagihan WHERE periodeBulan = $bulanFilter AND periodeTahun = $tahunFilter"))['total'];
 
+// Data chart status bayar
+$statusQuery = mysqli_query($conn, 
+    "SELECT statusBayar, COUNT(*) as jumlah, SUM(totalTagihan) as total 
+     FROM tagihan WHERE periodeBulan = $bulanFilter AND periodeTahun = $tahunFilter 
+     GROUP BY statusBayar");
+$chartStatus = [];
+while ($s = mysqli_fetch_assoc($statusQuery)) {
+    $chartStatus[$s['statusBayar']] = ['jumlah' => (int)$s['jumlah'], 'total' => (int)$s['total']];
+}
+
+// Data chart per kategori
+$kategoriQuery = mysqli_query($conn,
+    "SELECT k.namaKategori, COUNT(t.id) as jumlah, SUM(t.totalTagihan) as total
+     FROM tagihan t 
+     JOIN pelanggan p ON t.pelangganId = p.id 
+     LEFT JOIN kategori k ON p.kategoriId = k.id
+     WHERE t.periodeBulan = $bulanFilter AND t.periodeTahun = $tahunFilter
+     GROUP BY k.namaKategori ORDER BY total DESC");
+$chartKategoriLabels = [];
+$chartKategoriData = [];
+while ($k = mysqli_fetch_assoc($kategoriQuery)) {
+    $chartKategoriLabels[] = $k['namaKategori'] ?? 'Tanpa Kategori';
+    $chartKategoriData[] = (int)$k['total'];
+}
+
 $bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 ?>
 
@@ -72,6 +97,30 @@ $bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agust
                         <strong>Periode:</strong> <?= $bulanNama[$bulanFilter] ?> <?= $tahunFilter ?> |
                         <strong>Total Pendapatan:</strong> Rp <?= number_format($totalPendapatan, 0, ',', '.') ?>
                     </div>
+                    <!-- Chart Section -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card card-outline card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-chart-pie"></i> Status Pembayaran</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="chartStatus" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card card-outline card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-chart-bar"></i> Pendapatan per Kategori</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="chartKategori" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -116,4 +165,77 @@ $bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agust
     </section>
 
 </div>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Pie Chart - Status Pembayaran
+    const statusData = <?= json_encode($chartStatus) ?>;
+    const lunas = statusData['Lunas'] ? statusData['Lunas'].jumlah : 0;
+    const belum = statusData['Belum Bayar'] ? statusData['Belum Bayar'].jumlah : 0;
+
+    new Chart(document.getElementById('chartStatus'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Lunas', 'Belum Bayar'],
+            datasets: [{
+                data: [lunas, belum],
+                backgroundColor: ['rgba(40, 167, 69, 0.8)', 'rgba(220, 53, 69, 0.8)'],
+                borderColor: ['rgba(40, 167, 69, 1)', 'rgba(220, 53, 69, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+    // Bar Chart - Pendapatan per Kategori
+    const kategoriLabels = <?= json_encode($chartKategoriLabels) ?>;
+    const kategoriData = <?= json_encode($chartKategoriData) ?>;
+    const colors = [
+        'rgba(60, 141, 188, 0.7)', 'rgba(0, 166, 90, 0.7)', 'rgba(243, 156, 18, 0.7)',
+        'rgba(221, 75, 57, 0.7)', 'rgba(0, 192, 239, 0.7)', 'rgba(96, 92, 168, 0.7)'
+    ];
+
+    new Chart(document.getElementById('chartKategori'), {
+        type: 'bar',
+        data: {
+            labels: kategoriLabels,
+            datasets: [{
+                label: 'Pendapatan (Rp)',
+                data: kategoriData,
+                backgroundColor: colors.slice(0, kategoriLabels.length),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Rp ' + context.raw.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
 <?php include '../assets/layouts/footer.php'; ?>

@@ -21,6 +21,18 @@ $totalTahunan = mysqli_fetch_assoc(mysqli_query($conn,
     "SELECT COALESCE(SUM(totalTagihan), 0) as total FROM tagihan WHERE periodeTahun = $tahunFilter"))['total'];
 
 $bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+// Siapkan data chart
+$chartLabels = [];
+$chartData = [];
+$chartPemakaian = [];
+mysqli_data_seek($result, 0);
+while ($row = mysqli_fetch_assoc($result)) {
+    $chartLabels[] = $bulanNama[$row['periodeBulan']];
+    $chartData[] = (int)$row['totalPendapatan'];
+    $chartPemakaian[] = (int)$row['totalPemakaian'];
+}
+mysqli_data_seek($result, 0);
 ?>
 
 <?php include '../assets/layouts/sidebar.php'; ?>
@@ -61,6 +73,30 @@ $bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agust
                         <strong>Tahun:</strong> <?= $tahunFilter ?> |
                         <strong>Total Pendapatan:</strong> Rp <?= number_format($totalTahunan, 0, ',', '.') ?>
                     </div>
+                    <!-- Chart Pendapatan per Bulan -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="card card-outline card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-chart-bar"></i> Grafik Pendapatan per Bulan</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="chartPendapatan" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card card-outline card-info">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-chart-line"></i> Grafik Pemakaian (m³)</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="chartPemakaian" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -101,4 +137,76 @@ $bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agust
     </section>
 
 </div>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const labels = <?= json_encode($chartLabels) ?>;
+    const dataPendapatan = <?= json_encode($chartData) ?>;
+    const dataPemakaian = <?= json_encode($chartPemakaian) ?>;
+
+    // Bar Chart - Pendapatan per Bulan
+    new Chart(document.getElementById('chartPendapatan'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Pendapatan (Rp)',
+                data: dataPendapatan,
+                backgroundColor: 'rgba(60, 141, 188, 0.7)',
+                borderColor: 'rgba(60, 141, 188, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Rp ' + context.raw.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Line Chart - Pemakaian per Bulan
+    new Chart(document.getElementById('chartPemakaian'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Pemakaian (m³)',
+                data: dataPemakaian,
+                borderColor: 'rgba(23, 162, 184, 1)',
+                backgroundColor: 'rgba(23, 162, 184, 0.1)',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+});
+</script>
 <?php include '../assets/layouts/footer.php'; ?>
