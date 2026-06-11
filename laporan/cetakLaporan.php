@@ -8,6 +8,7 @@ include '../koneksi.php';
 
 // Ambil data pelanggan
 $pelangganList = mysqli_query($conn, "SELECT id, noRekening, namaPelanggan FROM pelanggan ORDER BY namaPelanggan ASC");
+$bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 ?>
 
 <?php include '../assets/layouts/sidebar.php'; ?>
@@ -26,7 +27,52 @@ $pelangganList = mysqli_query($conn, "SELECT id, noRekening, namaPelanggan FROM 
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            <!-- Cetak Semua Rekening -->
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-print"></i> Cetak Semua Rekening (Per Periode)</h3>
+                </div>
+                <div class="card-body">
+                    <form action="cetakSemuaRekening.php" method="GET" target="_blank">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Bulan</label>
+                                    <select name="bulan" class="form-control">
+                                        <?php for ($i = 1; $i <= 12; $i++): ?>
+                                            <option value="<?= $i ?>" <?= $i == date('m') ? 'selected' : '' ?>><?= $bulanNama[$i] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tahun</label>
+                                    <select name="tahun" class="form-control">
+                                        <?php for ($y = date('Y'); $y >= 2020; $y--): ?>
+                                            <option value="<?= $y ?>"><?= $y ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
+                                    <button type="submit" class="btn btn-success btn-block">
+                                        <i class="fas fa-print"></i> Cetak Semua Rekening
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Cetak Rekening Per Pelanggan -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-file-invoice"></i> Cetak Rekening Per Pelanggan</h3>
+                </div>
                 <div class="card-body">
                     <form action="cetakRekening.php" method="GET" target="_blank">
                         <div class="row">
@@ -46,9 +92,7 @@ $pelangganList = mysqli_query($conn, "SELECT id, noRekening, namaPelanggan FROM 
                                     <label>Bulan</label>
                                     <select name="periodeBulan" class="form-control">
                                         <option value="0">-- Semua --</option>
-                                        <?php 
-                                        $bulanNama = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-                                        for ($i = 1; $i <= 12; $i++): ?>
+                                        <?php for ($i = 1; $i <= 12; $i++): ?>
                                             <option value="<?= $i ?>"><?= $bulanNama[$i] ?></option>
                                         <?php endfor; ?>
                                     </select>
