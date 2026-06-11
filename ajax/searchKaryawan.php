@@ -10,22 +10,15 @@ $offset = ($page - 1) * $limit;
 
 $where = '';
 if ($search) {
-    $where = "WHERE p.noRekening LIKE '%$search%' OR p.namaPelanggan LIKE '%$search%'";
+    $where = "WHERE nik LIKE '%$search%' OR namaKaryawan LIKE '%$search%' OR jabatan LIKE '%$search%'";
 }
 
 // Count total
-$totalData = mysqli_fetch_assoc(mysqli_query($conn, 
-    "SELECT COUNT(t.id) as total FROM tagihan t JOIN pelanggan p ON t.pelangganId = p.id $where"))['total'];
+$totalData = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) as total FROM karyawan $where"))['total'];
 $totalPages = ceil($totalData / $limit);
 
 // Get data
-$query = "SELECT t.*, p.noRekening, p.namaPelanggan, kr.namaKaryawan 
-          FROM tagihan t 
-          JOIN pelanggan p ON t.pelangganId = p.id 
-          LEFT JOIN karyawan kr ON t.karyawanId = kr.id 
-          $where 
-          ORDER BY t.id DESC 
-          LIMIT $limit OFFSET $offset";
+$query = "SELECT * FROM karyawan $where ORDER BY id DESC LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $query);
 $data = [];
 
