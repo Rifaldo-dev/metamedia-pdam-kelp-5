@@ -70,14 +70,14 @@ $result = mysqli_query($conn, $query);
                         <a href="tambahTagihan.php" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Input Tagihan
                         </a>
-                        <form method="GET" class="form-inline">
+                        <div class="form-inline">
                             <div class="input-group input-group-sm">
-                                <input type="text" name="search" class="form-control" placeholder="Cari no rekening / nama..." value="<?= htmlspecialchars($search) ?>">
+                                <input type="text" id="liveSearch" class="form-control" placeholder="Cari no rekening / nama..." value="<?= htmlspecialchars($search) ?>" data-type="tagihan">
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                    <span class="btn btn-default"><i class="fas fa-search"></i></span>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body table-responsive p-0">
@@ -94,7 +94,7 @@ $result = mysqli_query($conn, $query);
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                             <?php if (mysqli_num_rows($result) > 0): ?>
                                 <?php $no = $offset + 1; while ($row = mysqli_fetch_assoc($result)): ?>
                                 <tr>
@@ -131,8 +131,8 @@ $result = mysqli_query($conn, $query);
                 </div>
 
                 <?php if ($totalPages > 1): ?>
-                <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
+                <div class="card-footer clearfix" id="paginationWrapper">
+                    <ul class="pagination pagination-sm m-0 float-right" id="pagination">
                         <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
                             <a class="page-link" href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>">&laquo;</a>
                         </li>
